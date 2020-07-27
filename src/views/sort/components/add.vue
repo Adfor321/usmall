@@ -67,6 +67,16 @@ export default {
       reqSortList: "sort/reqList",
     }),
     changeImg(e) {
+      if (e.size > 2 * 1024 * 1024) {
+        warringMsg("上传的图片不能超过2M");
+        return;
+      }
+      var extname = e.name.slice(e.name.lastIndexOf("."));
+      var extArr = [".png", ".jpg", ".gif", ".jpeg"];
+      if (!extArr.some((item) => item === extname)) {
+        warningAlert("上传文件必须是图片");
+        return;
+      }
       let file = e.raw;
       this.imageUrl = URL.createObjectURL(file);
       this.form.img = file;

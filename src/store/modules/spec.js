@@ -20,33 +20,38 @@ const mutations = {
     }
 }
 const actions = {
-    reqList(context){
-        const params={
-            size:context.state.size,
-            page:context.state.page
+    reqList(context) {
+        const params = {
+            size: context.state.size,
+            page: context.state.page
         }
-        reqSpecList(params).then(res=>{
-            context.commit('changeList',res.data.list)
+        reqSpecList(params).then(res => {
+            if (res.data.list.length === 0 && context.state.page > 1) {
+                context.commit('changeList', context.state.page)
+                context.dispatch('reqList')
+                return
+            }
+            context.commit('changeList', res.data.list)
         })
     },
     //获取总数
-    reqAllList(context){
-        reqSpecAll().then(res=>{
-            context.commit('changeAll',res.data.list[0].total)
+    reqAllList(context) {
+        reqSpecAll().then(res => {
+            context.commit('changeAll', res.data.list[0].total)
         })
     },
-    changePage(context,page){
-        context.commit('changePage',page)
+    changePage(context, page) {
+        context.commit('changePage', page)
     }
 }
 const getters = {
-    list(state){
+    list(state) {
         return state.list
     },
-    all(state){
+    all(state) {
         return state.all
     },
-    size(state){
+    size(state) {
         return state.size
     }
 }
@@ -55,5 +60,5 @@ export default {
     actions,
     getters,
     mutations,
-    namespaced:true
+    namespaced: true
 }

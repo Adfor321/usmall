@@ -54,7 +54,6 @@ methods: {
         this.$emit('edit',id)
     },
     del(id){
-        console.log(id)
         reqSortDel({id:id}).then(res=>{
             if(res.data.code === 200){
                 successMsg(res.data.msg)
