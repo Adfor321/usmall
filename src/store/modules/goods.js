@@ -1,12 +1,9 @@
-import { reqSpecList, reqSpecAll } from '@/utils/request'
+import { reqGoodsList,reqGoodsAll } from '@/utils/request'
 const state = {
-    list: [],
-    //总数
-    all: 0,
-    //一页的个数
-    size: 2,
-    //页数
-    page: 1,
+    list:[],
+    size:2,
+    page:1,
+    all:0,
 }
 const mutations = {
     changeList(state, arr) {
@@ -30,7 +27,7 @@ const actions = {
                 page: context.state.page
             }
         }
-        reqSpecList(params).then(res => {
+        reqGoodsList(params).then(res => {
             if (res.data.list.length === 0 && context.state.page > 1) {
                 context.commit('changeList', context.state.page)
                 context.dispatch('reqList')
@@ -41,7 +38,7 @@ const actions = {
     },
     //获取总数
     reqAllList(context) {
-        reqSpecAll().then(res => {
+        reqGoodsAll().then(res => {
             context.commit('changeAll', res.data.list[0].total)
         })
     },

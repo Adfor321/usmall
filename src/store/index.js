@@ -13,6 +13,8 @@ import spec from "./modules/spec"
 import vip from "./modules/vip"
 import sort from "./modules/sort"
 import lunbo from "./modules/lunbo"
+import goods from "./modules/goods"
+import kill from "./modules/kill"
 let store = new vuex.Store({
     state,
     mutations,
@@ -26,7 +28,9 @@ let store = new vuex.Store({
         spec,
         vip,
         sort,
-        lunbo
+        lunbo,
+        goods,
+        kill
     }
 })
 

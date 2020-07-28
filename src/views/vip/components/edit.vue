@@ -1,6 +1,6 @@
 <template>
   <div class="add">
-    <el-dialog title="收货地址" :visible.sync="info.show" @close="empty">
+    <el-dialog title="修改会员" :visible.sync="info.show" @close="empty">
       <el-form
         :model="form"
         status-icon

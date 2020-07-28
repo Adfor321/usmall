@@ -249,18 +249,96 @@ export const reqBannerOne = params => axios({
 //轮播图修改
 export const reqBannerEdit = params => {
     var formData = new FormData()
-    for(let i in params){
-        formData.append(i,params[i])
+    for (let i in params) {
+        formData.append(i, params[i])
     }
     return axios({
-        url:bassUrl+'/api/banneredit',
-        method:'post',
-        data:formData
+        url: bassUrl + '/api/banneredit',
+        method: 'post',
+        data: formData
     })
 }
 //轮播图删除
 export const reqBannerDel = params => axios({
-    url:bassUrl+'/api/bannerdelete',
+    url: bassUrl + '/api/bannerdelete',
+    method: 'post',
+    data: params
+})
+//商品添加
+export const reqGoodsAdd = (params) => {
+    let formData = new FormData()
+    for (let i in params) {
+        formData.append(i, params[i])
+    }
+    return axios({
+        url: bassUrl + '/api/goodsadd',
+        method: 'post',
+        data: formData
+    })
+}
+//商品列表
+export const reqGoodsList = (params) => axios({
+    url: bassUrl + '/api/goodslist',
+    method: 'get',
+    params
+})
+//商品总数
+export const reqGoodsAll = params => axios({
+    url: bassUrl + '/api/goodscount',
+    method: 'get',
+    params
+})
+//商品获取一条
+export const reqGoodsOne = params => axios({
+    url: bassUrl + '/api/goodsinfo',
+    method: 'get',
+    params
+})
+//商品修改
+export const reqGoodsEdit = (params) => {
+    let formData = new FormData()
+    for (let i in params) {
+        formData.append(i, params[i])
+    }
+    return axios({
+        url: bassUrl + '/api/goodsedit',
+        method:'post',
+        data:formData
+    })
+}
+//商品删除
+export const reqGoodsDel = params=>axios({
+    url:bassUrl+'/api/goodsdelete',
     method:'post',
-    data:params
+    data:qs.stringify(params)
+})
+//秒杀添加
+export const reqKillAdd = params=>axios({
+    url:bassUrl+'/api/seckadd',
+    method:'post',
+    data:qs.stringify(params)
+})
+//秒杀列表
+export const reqKillList = params => axios({
+    url: bassUrl + '/api/secklist',
+    method: 'get',
+    params
+})
+//秒杀获取一条
+export const reqKillOne = params => axios({
+    url: bassUrl + '/api/seckinfo',
+    method: 'get',
+    params
+})
+//秒杀修改
+export const reqKillEdit = params=>axios({
+    url:bassUrl+'/api/seckedit',
+    method:'post',
+    data:qs.stringify(params)
+})
+//秒杀删除
+export const reqKillDel = params=>axios({
+    url:bassUrl+'/api/seckdelete',
+    method:'post',
+    data:qs.stringify(params)
 })
