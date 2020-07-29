@@ -1,8 +1,8 @@
 <template>
   <div class="add">
     <el-dialog :title="info.title" :visible.sync="info.show">
-      <el-form :model="form">
-        <el-form-item label="标题" label-width="80px">
+      <el-form :model="form" :rules="rules">
+        <el-form-item label="标题" label-width="80px" prop="title">
           <el-input v-model="form.title" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="图片" label-width="80px">
@@ -46,6 +46,9 @@ export default {
         status: 1,
       },
       imageUrl: "",
+      rules:{
+        title:[{ required: true, message: '请输入标题', trigger: 'blur' }],
+      },
     };
   },
   computed: {},
@@ -100,6 +103,10 @@ export default {
       });
     },
     add() {
+      if(!this.form.title){
+        warringMsg('标题不能为空')
+        return
+      }
       reqBannerAdd(this.form).then((res) => {
         if (res.data.code === 200) {
           successMsg(res.data.msg);

@@ -61,7 +61,6 @@ export default {
       pages(a){
         this.changePage(a);
         this.reqList()
-        this.reqAllList();
       },
       del(id){
         reqSpecDel({ id: id }).then((res) => {

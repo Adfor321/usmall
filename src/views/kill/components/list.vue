@@ -6,8 +6,8 @@
       row-key="id"
       border
     >
-      <el-table-column prop="title" label="活动名称" width="180"></el-table-column>
-      <el-table-column label="状态">
+      <el-table-column prop="title" label="活动名称" width="150"></el-table-column>
+      <el-table-column label="状态" width='150'>
         <template slot-scope="scope">
           <el-button type="primary" v-if="scope.row.status==1">启用</el-button>
           <el-button type="info" v-else>禁用</el-button>

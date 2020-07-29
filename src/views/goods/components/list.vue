@@ -6,7 +6,7 @@
       row-key="id"
       border
     >
-      <el-table-column prop="id" label="商品编号" width="50"></el-table-column>
+      <el-table-column prop="id" label="商品编号" width="80"></el-table-column>
       <el-table-column prop="goodsname" label="商品名称"></el-table-column>
       <el-table-column prop="price" label="商品价格"></el-table-column>
       <el-table-column prop="market_price" label="市场价格"></el-table-column>
@@ -90,7 +90,7 @@ methods: {
         })
     },
     cPage(i){
-        this.changePage(a);
+        this.changePage(i);
       this.reqGoodsList();
     }
 },

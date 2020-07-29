@@ -1,8 +1,8 @@
 <template>
   <div class="add">
     <el-dialog :title="info.title" :visible.sync="info.show" @close="empty">
-      <el-form :model="form">
-        <el-form-item label="菜单名称" label-width="80px">
+      <el-form :model="form" :rules="rules">
+        <el-form-item label="菜单名称" label-width="80px" prop="title">
           <el-input v-model="form.title" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级菜单" label-width="80px">
@@ -13,8 +13,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="菜单类型" label-width="80px">
-          <el-radio v-model="form.type" :label="1">目录</el-radio>
-          <el-radio v-model="form.type" :label="2">菜单</el-radio>
+          <el-radio v-model="form.type" :label="1" @change="one">目录</el-radio>
+          <el-radio v-model="form.type" :label="2" @change="two">菜单</el-radio>
         </el-form-item>
         <el-form-item label="菜单图标" label-width="80px" v-if="form.type==1">
           <el-select v-model="form.icon">
@@ -22,7 +22,7 @@
             <el-option v-for="item in icons" :key="item" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="菜单地址" label-width="80px" v-else>
+        <el-form-item label="菜单地址" label-width="80px" v-else prop="url">
           <el-select v-model="form.url">
             <el-option label="--请选择--" value disabled></el-option>
             <el-option v-for="item in urls" :key="item" :label="item" :value="item"></el-option>
@@ -59,7 +59,7 @@ export default {
         "el-icon-setting",
         "el-icon-s-help",
         "el-icon-s-operation",
-        "el-icon-s-grid",
+        "el-icon-goods",
       ],
       urls: [
         "/home",
@@ -71,7 +71,8 @@ export default {
         "/goods",
         "/lunbo",
         "/kill",
-        "/admin"
+        "/admin",
+        "/index"
       ],
       form: {
         pid: 0,
@@ -80,6 +81,14 @@ export default {
         type: 1,
         url: "",
         status: 1,
+      },
+      rules: {
+        title: [
+          { required: true, message: '请输入菜单名称', trigger: 'blur' },
+        ],
+        url: [
+            { required: true, message: '菜单地址不能为空', trigger: 'change' }
+          ],
       },
     };
   },
@@ -108,8 +117,11 @@ export default {
       this.empty();
     },
     add() {
-      if (!this.form.rolename) {
+      if (!this.form.title) {
         warringMsg("菜单名不能为空");
+        return;
+      }else if(!this.form.url){
+        warringMsg("菜单地址不能为空");
         return;
       }
       reqMenuAdd(this.form).then((res) => {
@@ -130,10 +142,21 @@ export default {
         this.form.id = id;
       });
     },
+    one() {
+      this.form.icon = "";
+      this.form.url = "";
+    },
+    two() {
+      this.form.icon = "";
+      this.form.url = "";
+    },
     //修改
     update() {
-      if (!this.form.rolename) {
+      if (!this.form.title) {
         warringMsg("菜单名不能为空");
+        return;
+      }else if(!this.form.url){
+        warringMsg("菜单地址不能为空");
         return;
       }
       reqMenuUpdate(this.form).then((res) => {

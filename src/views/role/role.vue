@@ -18,7 +18,8 @@ data() {
 return {
     info:{
         show:false,
-        isAdd:true
+        isAdd:true,
+        title:'添加角色'
     }
 }
 },
@@ -28,9 +29,11 @@ methods: {
     add(){
         this.info.show = true
         this.info.isAdd = true
+        this.info.title = '添加角色'
     },
     edit(id){
         this.info.show = true
+        this.info.title = '修改角色'
         this.info.isAdd = false
         this.$refs.add.getRoleOne(id)
     }

@@ -1,61 +1,49 @@
 <template>
-  <div class="home">
-    <el-container>
-      <el-aside width="150px">
-        <el-row>
-          <el-col :span="24">
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-              background-color="#20222a"
-              text-color="#fff"
-              active-text-color="#ffd04b"
-              unique-opened
-              router
-            >
-              <el-menu-item index="/home">
-                <template slot="title">
-                  <i class="el-icon-menu"></i>
-                  <span>首页</span>
-                </template>
-              </el-menu-item>
-              <el-submenu index="2">
-                <template slot="title">
-                  <i class="el-icon-setting"></i>
-                  <span>系统设置</span>
-                </template>
-                <el-menu-item index="/home/menu">菜单管理</el-menu-item>
-                <el-menu-item index="/home/role">角色管理</el-menu-item>
-                <el-menu-item index="/home/admin">管理员管理</el-menu-item>
-              </el-submenu>
-              <el-submenu index="3">
-                <template slot="title">
-                  <i class="el-icon-goods"></i>
-                  <span>商城管理</span>
-                </template>
-                <el-menu-item index="/home/sort">商品分类</el-menu-item>
-                <el-menu-item index="/home/spec">商品规格</el-menu-item>
-                <el-menu-item index="/home/goods">商品管理</el-menu-item>
-                <el-menu-item index="/home/vip">会员管理</el-menu-item>
-                <el-menu-item index="/home/lunbo">轮播图管理</el-menu-item>
-                <el-menu-item index="/home/kill">秒杀活动</el-menu-item>
-              </el-submenu>
-            </el-menu>
-          </el-col>
-        </el-row>
+  <div>
+    <el-container class="page">
+      <el-aside width="200px">
+        <el-menu
+          class="el-menu-vertical-demo"
+          background-color="#20222a"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+          router
+          :unique-opened="true"
+        >
+          <el-menu-item index="/home">
+            <i class="el-icon-setting"></i>
+            <span slot="title">首页</span>
+          </el-menu-item>
+
+
+          <el-submenu v-show="user.menus[index].children" :index="item.id+''" v-for="(item,index) in user.menus" :key="item.id">
+            <template slot="title">
+              <i :class="item.icon"></i>
+              <span>{{item.title}}</span>
+            </template>
+            <el-menu-item v-for="(i) in item.children" :key="i.title" :index="'/home'+i.url">{{i.title}}</el-menu-item>
+          </el-submenu>
+
+          <!-- 没有目录，只有菜单 -->
+         <el-menu-item v-show="!user.menus[index].children"  :index="'/home'+i.url" v-for="(i,index) in user.menus" :key="i.title">
+            {{i.title}}
+          </el-menu-item>
+        </el-menu>
+        <!-- 导航结束 -->
       </el-aside>
       <el-container>
         <el-header>
-          <div class="username">
-            <span>{{username}}</span>
-            <el-button type="primary" round>退出</el-button>
+          <div class="header-con">
+            <span>{{user.username}}</span>
+            <el-button type="primary" @click="exit">退出</el-button>
           </div>
         </el-header>
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item  :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>{{$route.name}}</el-breadcrumb-item>
           </el-breadcrumb>
+            <div id="main" style="width: 700px;height:500px;" v-if='!$route.name'></div>
           <router-view class="view"></router-view>
         </el-main>
       </el-container>
@@ -67,58 +55,73 @@
 import { successMsg } from "@/utils/alter";
 import { reqAdminLogin } from "@/utils/request";
 import { mapGetters, mapActions } from "vuex";
+var echarts = require('echarts');
+
 export default {
-  components: {},
+  components: {
+    
+  },
   data() {
     return {
+      shows:true
     };
   },
   computed: {
     ...mapGetters({
-      username:'login/username'
-    })
+      user: "login/user",
+    }),
   },
   watch: {},
-  mounted(){
-    
+  mounted() {
+    var myChart = echarts.init(document.getElementById('main'));
+    myChart.setOption({
+            title: { text: '在Vue中使用echarts' },
+            tooltip: {},
+            xAxis: {
+                data: ["周一","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        });
   },
   methods: {
+    hasChildren() {
+      return this.user.menus[0].chi
+      ldren ? true : false;
+    },
     ...mapActions({
-      reqAdminLogin:'login/reqAdminLogin'
-    })
+      reqLogin: "login/reqLogin",
+    }),
+    exit() {
+      this.reqLogin(null);
+      this.$router.push("/");
+    },
   },
 };
 </script>
 <style scoped>
 .el-aside {
   background: #20222a;
-  height: 100vh;
-}
-.el-aside::-webkit-scrollbar {
-  display: none;
 }
 .el-header {
   background: #b3c0d1;
+  overflow: hidden;
 }
-.el-menu {
-  background-color: #20222a;
-  border-right: none;
-  overflow-y: hidden;
-  overflow-x: hidden;
+.page {
+  height: 100vh;
 }
-.el-menu-item:focus,
-.el-menu-item:hover {
-  background: #1a1b22;
-}
-.el-submenu__title:hover {
-  background: #1a1b22;
-}
-.username {
-  height: 100%;
-  line-height: 60px;
+.header-con {
   float: right;
 }
-.view{
-  margin-top: 20px;
+.header-con span {
+  line-height: 60px;
+  color: #ffffff;
+}
+.view {
+  padding-top: 20px;
 }
 </style>

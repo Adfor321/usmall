@@ -32,7 +32,8 @@ const actions = {
         }
         reqSpecList(params).then(res => {
             if (res.data.list.length === 0 && context.state.page > 1) {
-                context.commit('changeList', context.state.page)
+                console.log(res.data.list.length)
+                context.commit('changePage', context.state.page-1)
                 context.dispatch('reqList')
                 return
             }

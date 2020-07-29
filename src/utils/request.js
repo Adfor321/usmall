@@ -1,10 +1,22 @@
 import axios from 'axios';
 import qs from 'qs';
+import login from "@/store/modules/login"
+import {warringMsg}from './alter'
 const bassUrl = '/api';
+// 请求拦截
+axios.interceptors.request.use(config => {
+    if (config.url != bassUrl + '/api/userlogin') {
+        config.headers.authorization = login.state.user.token;
+    }
+    return config
+})
+//相应拦截
 axios.interceptors.response.use(res => {
-    console.group('本次请求的地址是' + res.config.url)
-    console.log(res)
-    console.groupEnd()
+    if(res.data.msg==="登录已过期或访问权限受限"){
+        warringMsg('登录已过期或访问权限受限')
+        router.push('/')
+        return
+    }
     return res
 })
 //菜单添加
@@ -302,21 +314,21 @@ export const reqGoodsEdit = (params) => {
     }
     return axios({
         url: bassUrl + '/api/goodsedit',
-        method:'post',
-        data:formData
+        method: 'post',
+        data: formData
     })
 }
 //商品删除
-export const reqGoodsDel = params=>axios({
-    url:bassUrl+'/api/goodsdelete',
-    method:'post',
-    data:qs.stringify(params)
+export const reqGoodsDel = params => axios({
+    url: bassUrl + '/api/goodsdelete',
+    method: 'post',
+    data: qs.stringify(params)
 })
 //秒杀添加
-export const reqKillAdd = params=>axios({
-    url:bassUrl+'/api/seckadd',
-    method:'post',
-    data:qs.stringify(params)
+export const reqKillAdd = params => axios({
+    url: bassUrl + '/api/seckadd',
+    method: 'post',
+    data: qs.stringify(params)
 })
 //秒杀列表
 export const reqKillList = params => axios({
@@ -331,14 +343,14 @@ export const reqKillOne = params => axios({
     params
 })
 //秒杀修改
-export const reqKillEdit = params=>axios({
-    url:bassUrl+'/api/seckedit',
-    method:'post',
-    data:qs.stringify(params)
+export const reqKillEdit = params => axios({
+    url: bassUrl + '/api/seckedit',
+    method: 'post',
+    data: qs.stringify(params)
 })
 //秒杀删除
-export const reqKillDel = params=>axios({
-    url:bassUrl+'/api/seckdelete',
-    method:'post',
-    data:qs.stringify(params)
+export const reqKillDel = params => axios({
+    url: bassUrl + '/api/seckdelete',
+    method: 'post',
+    data: qs.stringify(params)
 })

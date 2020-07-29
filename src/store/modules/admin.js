@@ -25,10 +25,9 @@ const actions = {
             size: context.state.size,
             page: context.state.page
         }
-        
         reqAdminList(params).then(res => {
             if(!res.data.list&&context.state.page>1){
-                context.commit('changeList', context.state.page-1)
+                context.commit('changePage', context.state.page-1)
                 context.dispatch('reqList')
                 return
             }

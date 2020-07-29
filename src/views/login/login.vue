@@ -27,26 +27,31 @@ export default {
         username: "",
         password: "",
       },
-      admin: '',
     };
+  },
+  mounted() {
+    this.homes()
   },
   computed: {
     ...mapGetters({
-      username: "login/username",
+      users: "login/user",
     }),
   },
   watch: {},
   methods: {
     ...mapActions({
-      // reqAdminLogin: "login/reqAdminLogin",
       reqLogin: "login/reqLogin",
     }),
+    homes(){
+      if(this.users!=null){
+        this.$router.push("/home");
+      }
+    },
     login() {
       reqAdminLogin(this.user).then((res) => {
         if (res.data.code === 200) {
-          this.admin = res.data.list.username;
           successMsg(res.data.msg);
-          this.reqLogin(this.admin);
+          this.reqLogin(res.data.list);
           this.$router.push("/home");
         } else {
           warringMsg(res.data.msg);

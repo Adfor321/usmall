@@ -1,8 +1,8 @@
 <template>
   <div class="add">
     <el-dialog width="60%" :title="info.title" :visible.sync="info.show" @opened="createEditor">
-      <el-form :model="form">
-        <el-form-item label="一级分类" label-width="80px">
+      <el-form :model="form" ref="forms" :rules="rules">
+        <el-form-item label="一级分类" label-width="80px" prop="first_cateid">
           <el-select v-model="form.first_cateid" @change="changeFirst()">
             <el-option label="--请选择--" value disabled></el-option>
             <el-option
@@ -13,7 +13,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="二级分类" label-width="80px">
+        <el-form-item label="二级分类" label-width="80px" prop="second_cateid">
           <el-select v-model="form.second_cateid">
             <el-option label="--请选择--" value disabled></el-option>
             <el-option
@@ -24,13 +24,13 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品名称" label-width="80px">
+        <el-form-item label="商品名称" label-width="80px" prop="goodsname">
           <el-input v-model="form.goodsname" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="价格" label-width="80px">
+        <el-form-item label="价格" label-width="80px" prop="price">
           <el-input v-model="form.price" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="市场价格" label-width="80px">
+        <el-form-item label="市场价格" label-width="80px" prop="market_price">
           <el-input v-model="form.market_price" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="图片" label-width="80px">
@@ -46,7 +46,7 @@
             </el-upload>
           </div>
         </el-form-item>
-        <el-form-item label="商品规格" label-width="80px">
+        <el-form-item label="商品规格" label-width="80px" prop="specsid">
           <el-select v-model="form.specsid" @change="specArr()">
             <el-option label="--请选择--" value disabled></el-option>
             <el-option
@@ -57,7 +57,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品属性" label-width="80px">
+        <el-form-item label="商品属性" label-width="80px" prop="specsattr">
           <el-select v-model="form.specsattr" multiple>
             <el-option label="--请选择--" value disabled></el-option>
             <el-option v-for="item in specArrs" :key="item" :label="item" :value="item"></el-option>
@@ -115,6 +115,11 @@ export default {
         status: 1,
       },
       imageUrl: "",
+      rules: {
+        goodsname: [
+          { required: true, message: "请输入商品名称", trigger: "blur" },
+        ],
+      },
     };
   },
   computed: {
@@ -160,7 +165,7 @@ export default {
           this.reqGoodsList();
           this.reqAllList();
         } else {
-          warringMsg(res.data.msg);
+          successMsg(res.data.msg);
         }
       });
     },
@@ -202,7 +207,7 @@ export default {
         this.empty();
         this.cancel();
         this.reqGoodsList();
-          this.reqAllList();
+        this.reqAllList();
       });
     },
     cancel() {

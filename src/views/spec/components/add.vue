@@ -1,8 +1,8 @@
 <template>
   <div class="add">
-    <el-dialog title="添加规格" :visible.sync="info.show" @close="empty">
-      <el-form :model="form" ref="form" label-width="80px" class="demo-dynamic">
-        <el-form-item label="规格名称" :rules="[{ required: true,trigger: 'blur' }]">
+    <el-dialog :title="info.title" :visible.sync="info.show" @close="empty">
+      <el-form :model="form" ref="form" :rules="rules" label-width="80px" class="demo-dynamic">
+        <el-form-item label="规格名称" prop="specsname">
           <el-input v-model="form.specsname"></el-input>
         </el-form-item>
         <el-form-item v-for="(item,index) in attrs" label="规格属性" :key="item.key" class="wen">
@@ -37,6 +37,9 @@ export default {
         attrs: "",
         status: 1,
       },
+      rules:{
+        specsname:[{ required: true, message: '请输入规格名称', trigger: 'blur' }],
+      },
       attrs: [
         {
           value: "",
@@ -51,6 +54,10 @@ export default {
         if (this.attrs[i]) {
           arr.push(this.attrs[i].value);
         }
+      }
+      if (this.attrs.some((item) => item.value == "")) {
+        warringMsg("属性规格均不能为空");
+        return;
       }
       this.form.attrs = JSON.stringify(arr);
       reqSpecAdd(this.form).then((res) => {

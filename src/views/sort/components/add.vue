@@ -1,7 +1,7 @@
 <template>
   <div class="add">
     <el-dialog :title="info.title" :visible.sync="info.show">
-      <el-form :model="form">
+      <el-form :model="form" :rules="rules">
         <el-form-item label="上级分类" label-width="80px">
           <el-select v-model="form.pid">
             <el-option label="--请选择--" value disabled></el-option>
@@ -9,7 +9,7 @@
             <el-option v-for="item in list" :key="item.id" :label="item.catename" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="分类名称" label-width="80px">
+        <el-form-item label="分类名称" label-width="80px" prop="catename">
           <el-input v-model="form.catename" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="图片" label-width="80px">
@@ -54,6 +54,9 @@ export default {
         status: 1,
       },
       imageUrl: "",
+      rules:{
+        catename:[{ required: true, message: '请输入分类名称', trigger: 'blur' }]
+      }
     };
   },
   computed: {
@@ -113,6 +116,13 @@ export default {
         })
     },
     add() {
+      if(!this.form.catename){
+        warringMsg('分类名称不能为空')
+        return
+      }else if(!this.form.img){
+        warringMsg('图片必须添加')
+        return
+      }
       reqSortAdd(this.form).then((res) => {
         if (res.data.code === 200) {
           successMsg(res.data.msg);

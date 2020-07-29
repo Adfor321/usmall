@@ -1,25 +1,26 @@
 import {reqAdminLogin} from '@/utils/request'
 const state={
-    username:""
+    user:sessionStorage.getItem("user")?JSON.parse(sessionStorage.getItem("user")):null
 }
 const mutations={
-    changeList(state,name){
-        state.username = name
+    changeList(state,user){
+        state.user = user
+        sessionStorage.setItem("user",JSON.stringify(state.user))
     }
 }
 const actions = {
     reqAdminLogin(context){
         reqAdminLogin().then(res=>{
-            context.commit('changeList',res.data.list.username)
+            context.commit('changeList',res.data.list)
         })
     },
-    reqLogin(context,name){      
-            context.commit('changeList',name)
+    reqLogin(context,user){      
+            context.commit('changeList',user)
     },
 }
 const getters = {
-    username(state){
-        return state.username
+    user(state){
+        return state.user
     }
 }
 export default {

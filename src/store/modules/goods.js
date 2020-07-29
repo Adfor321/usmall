@@ -1,9 +1,9 @@
-import { reqGoodsList,reqGoodsAll } from '@/utils/request'
+import { reqGoodsList, reqGoodsAll } from '@/utils/request'
 const state = {
-    list:[],
-    size:2,
-    page:1,
-    all:0,
+    list: [],
+    size: 2,
+    page: 1,
+    all: 0,
 }
 const mutations = {
     changeList(state, arr) {
@@ -28,8 +28,8 @@ const actions = {
             }
         }
         reqGoodsList(params).then(res => {
-            if (res.data.list.length === 0 && context.state.page > 1) {
-                context.commit('changeList', context.state.page)
+            if (res.data.list.length == 0 && context.state.page > 1) {
+                context.commit('changePage', context.state.page - 1)
                 context.dispatch('reqList')
                 return
             }
