@@ -19,6 +19,7 @@ export default {
       info: {
         show: false,
         isAdd: true,
+        title:'添加分类'
       },
     };
   },
@@ -27,10 +28,12 @@ export default {
   methods: {
     add() {
       this.info.show = true;
+      this.info.title = '添加分类'
       this.info.isAdd = true;
     },
     edit(id) {
       this.info.show = true;
+      this.info.title = '修改分类'
       this.info.isAdd = false;
       this.$refs.add.getOne(id);
     },
