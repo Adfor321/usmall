@@ -25,6 +25,11 @@ let router = new Router({
           }
         },
         {
+          path: 'index',
+          name: '首页',
+          component: () => import('@/views/index/index.vue'),
+        },
+        {
           path: 'kill',
           name: '限时列表',
           component: () => import('@/views/kill/kill.vue'),

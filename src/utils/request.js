@@ -2,6 +2,7 @@ import axios from 'axios';
 import qs from 'qs';
 import login from "@/store/modules/login"
 import {warringMsg}from './alter'
+// const bassUrl = '';
 const bassUrl = '/api';
 // 请求拦截
 axios.interceptors.request.use(config => {

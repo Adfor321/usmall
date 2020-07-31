@@ -44,7 +44,7 @@ export default {
     }),
     homes(){
       if(this.users!=null){
-        this.$router.push("/home");
+        this.$router.push("/home/index");
       }
     },
     login() {
@@ -52,7 +52,7 @@ export default {
         if (res.data.code === 200) {
           successMsg(res.data.msg);
           this.reqLogin(res.data.list);
-          this.$router.push("/home");
+          this.$router.push("/home/index");
         } else {
           warringMsg(res.data.msg);
         }

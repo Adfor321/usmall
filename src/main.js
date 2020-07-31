@@ -12,6 +12,7 @@ import commonComponents from "./components/index"
 for (let i in commonComponents) {
   Vue.component(i, commonComponents[i])
 }
+// Vue.prototype.$imgs = ''
 Vue.prototype.$imgs = 'http://localhost:3000'
 import filters from "./filters"
 for (let i in filters) {
